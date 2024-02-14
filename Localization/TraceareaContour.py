@@ -5,16 +5,18 @@ from sklearn.cluster import KMeans
 
 #Setting Webcab size
 cap = cv.VideoCapture(0)
-def areaofCnt(img_mask,imgContour):
+def areaofCnt(img_mask,imgContour,color,x,y):
     contours,hierarchy = cv.findContours(img_mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     cv.drawContours(imgContour,contours, -1, (255,0,255),7)
     for cnt in contours:
         area = cv.contourArea(cnt) 
         if((area > 5000) and (area <= 10000)):
-            cv.putText(imgContour, "area is: " + str(area), (300,300), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv.putText(imgContour, "area is: " + str(area), (x,y), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv.putText(imgContour, "color is: " + color, (x+50,y+50), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             #cv.putText(imgContour, "close", (300,300), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
         elif(area > 10000):
-            cv.putText(imgContour, "area is: " + str(area), (300,300), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv.putText(imgContour, "area is: " + str(area), (x,y), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv.putText(imgContour, "color is: " + color, (x+50,y+50), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             #cv.putText(imgContour, "open", (300,300), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
 #draw a rectangle on your brg image
@@ -32,6 +34,8 @@ while(1):
     upper_yellow = np.array([40,255,255])
     lower_green = np.array([50,100,100])
     upper_green = np.array([70,255,255])
+    lower_blue = np.array([95,100,100])
+    upper_blue = np.array([115,255,255])
 
     # Convert BGR to HSV
     hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
@@ -41,14 +45,15 @@ while(1):
     # Bitwise-AND mask and original image (3)
     res = cv.bitwise_and(frame, frame, mask= mask)
     
-    #crop_hsv = cv.cvtColor(frame[400:640,0:480], cv.COLOR_BGR2HSV)
-    
     left_screen = frame[0:640,450:650]
     crop_hsv = cv.cvtColor(left_screen, cv.COLOR_BGR2HSV)
-    mask_interest = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
+    #mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
+    mask_interest1 = cv.inRange(hsv,lower_yellow, upper_yellow)
+    mask_interest2 = cv.inRange(hsv,lower_blue, upper_blue)
     
-    areaofCnt(mask_interest,imgContour)
-  
+    areaofCnt(mask_interest1,imgContour,"yellow",100,100)
+    areaofCnt(mask_interest2,imgContour,"blue",300,300)
+
     # Display of your usual four images
     cv.imshow('imgContour',imgContour)
     #cv.imshow('mask',mask)
