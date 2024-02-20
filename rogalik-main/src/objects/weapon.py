@@ -1,6 +1,12 @@
+#OpenCV
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+#Pygame
 import math
 import random
-
 import pygame
 from pygame.math import Vector2
 from src.utils import get_mask_rect
@@ -10,11 +16,77 @@ from .object import Object
 from src.particles import ParticleManager, Fire
 from src.bullet import StaffBullet
 
+cap = cv.VideoCapture(0)
+#img_mask = your target detected mask of frame; X's Y's are the coordinate of your target frame
+def weaponAngle(img_mask,x1,x2,y1,y2):
+    detectArea = 5000
+    contours,hierarchy = cv.findContours(img_mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+    for cnt in contours:
+        area = cv.contourArea(cnt) 
+        if(area > detectArea):
+            if(x1 == 0 and x2 == 213 and y1 == 0 and y2 == 160):
+                angle = 45
+            if(x1 == 0 and x2 == 213 and y1 == 160 and y2 == 320):
+                angle = 90
+            if(x1 == 0 and x2 == 213 and y1 == 320 and y2 == 480):
+                angle = 135
+            if(x1 == 213 and x2 == 426 and y1 == 0 and y2 == 160):
+                angle = 0
+            if(x1 == 213 and x2 == 426 and y1 == 320 and y2 == 480):
+                angle = 180
+            if(x1 == 426 and x2 == 640 and y1 == 0 and y2 == 160):
+                angle = 315
+            if(x1 == 426 and x2 == 640 and y1 == 160 and y2 == 320):
+                angle = 270
+            if(x1 == 426 and x2 == 640 and y1 == 320 and y2 == 480):
+                angle = 225
+    return angle
 
+#Testing
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Setting Webcab size
+
+'''
+while(1):
+    # Take each frame (1)
+    _, frame = cap.read()  
+    imgContour = frame.copy()
+    # define range of blue color in HSV
+    lower_yellow = np.array([20,100,100])
+    upper_yellow = np.array([40,255,255])
+    lower_green = np.array([50,100,100])
+    upper_green = np.array([70,255,255])
+
+    # Convert BGR to HSV
+    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+    # Threshold the HSV image to get only blue colors (2)
+    mask = cv.inRange(hsv, lower_yellow, upper_yellow)
+    # Bitwise-AND mask and original image (3)
+    res = cv.bitwise_and(frame, frame, mask= mask)
+    
+    #frame[y1:y2, x1:x2]
+    #frame width = 640      frame height = 480
+    left_screen = frame[300:480,250:400]
+    #left_screen = frame
+    crop_hsv = cv.cvtColor(left_screen, cv.COLOR_BGR2HSV)
+    #mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
+    mask_interest = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
+
+    areaofCnt(mask_interest,imgContour)
+
+    k = cv.waitKey(5) & 0xFF
+    if k == 27:
+        break
+cv.destroyAllWindows()
+'''
+#Weapon Control(Localization)
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WeaponSwing:
-    left_swing = 10
-    right_swing = -190
-
     def __init__(self, weapon):
         self.weapon = weapon
         self.angle = 0
@@ -22,18 +94,24 @@ class WeaponSwing:
         self.offset_rotated = Vector2(0, -25)
         self.counter = 0
         self.swing_side = 1
+        #reserve for opencv while loop
 
     def reset(self):
         self.counter = 0
 
     def rotate(self, weapon=None):
+        #Mouse cursor Orientation Control---------------------------------------------------------------------------------------------------------------------------------------------------------------------
         mx, my = pygame.mouse.get_pos()
-        dx = mx - self.weapon.player.hitbox.centerx  # - 64
-        dy = my - self.weapon.player.hitbox.centery  # - 32
         if self.swing_side == 1:
-            self.angle = (180 / math.pi) * math.atan2(-self.swing_side * dy, dx) + self.left_swing
+        #self.angle = angle where weapon orientated
+            #self.angle = (180 / math.pi) * math.atan2(-self.swing_side * dy, dx) + self.left_swing
+            self.angle = 0
         else:
-            self.angle = (180 / math.pi) * math.atan2(self.swing_side * dy, dx) + self.right_swing
+            #self.angle = (180 / math.pi) * math.atan2(self.swing_side * dy, dx) + self.right_swing
+            self.angle = 0
+
+        #OpenCV Orientation Control---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            #weaponAngle()
 
         position = self.weapon.player.hitbox.center
         if weapon:
@@ -56,7 +134,10 @@ class WeaponSwing:
         self.weapon.hitbox = pygame.mask.from_surface(self.weapon.image)
         self.counter += 1
 
-
+#Weapon Interaction
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Weapon(Object):
     def __init__(self, game, name=None, size=None, room=None, position=None):
         self.scale = 3
@@ -176,7 +257,10 @@ class Weapon(Object):
         self.show_price.draw(surface)
         self.draw_shadow(surface)
 
-
+#Weapon Types
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Staff(Weapon):
     name = 'staff'
     damage = 10
