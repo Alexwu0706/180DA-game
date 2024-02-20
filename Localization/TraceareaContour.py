@@ -19,12 +19,6 @@ def areaofCnt(img_mask,imgContour,color,x,y):
             cv.putText(imgContour, "color is: " + color, (x+50,y+50), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             #cv.putText(imgContour, "open", (300,300), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
-#draw a rectangle on your brg image
-def designatedRec(x,y,w,h,brgInputImage):
-    temp = cv.rectangle(brgInputImage,(x,y),(x+w,y+h),(0,255,0),2)
-    img = cv.cvtColor(temp, cv.COLOR_BGR2RGB)
-    return img
-
 while(1):
     # Take each frame (1)
     _, frame = cap.read()  
@@ -45,12 +39,15 @@ while(1):
     # Bitwise-AND mask and original image (3)
     res = cv.bitwise_and(frame, frame, mask= mask)
     
-    left_screen = frame[0:640,450:650]
+    #frame[y1:y2, x1:x2]
+    #frame width = 640      frame height = 480
+    left_screen = frame[300:480,250:400]
+    #left_screen = frame
     crop_hsv = cv.cvtColor(left_screen, cv.COLOR_BGR2HSV)
     #mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
-    mask_interest1 = cv.inRange(hsv,lower_yellow, upper_yellow)
+    mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
     mask_interest2 = cv.inRange(hsv,lower_blue, upper_blue)
-    
+
     areaofCnt(mask_interest1,imgContour,"yellow",100,100)
     areaofCnt(mask_interest2,imgContour,"blue",300,300)
 
