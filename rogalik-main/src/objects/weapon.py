@@ -26,66 +26,23 @@ def weaponAngle(img_mask,y1,y2,x1,x2,pre_angle):
         area = cv.contourArea(cnt) 
         if(area > detectArea):
             if(x1 == 0 and x2 == 213 and y1 == 0 and y2 == 160):
-                angle = 45
+                angle = 315
             if(x1 == 0 and x2 == 213 and y1 == 160 and y2 == 320):
-                angle = 90
+                angle = 270
             if(x1 == 0 and x2 == 213 and y1 == 320 and y2 == 480):
-                angle = 135
+                angle = 225
             if(x1 == 213 and x2 == 426 and y1 == 0 and y2 == 160):
                 angle = 0
             if(x1 == 213 and x2 == 426 and y1 == 320 and y2 == 480):
                 angle = 180
             if(x1 == 426 and x2 == 640 and y1 == 0 and y2 == 160):
-                angle = 315
+                angle = 45
             if(x1 == 426 and x2 == 640 and y1 == 160 and y2 == 320):
-                angle = 270
+                angle = 90
             if(x1 == 426 and x2 == 640 and y1 == 320 and y2 == 480):
-                angle = 225
+                angle = 135
     return angle
 
-#Testing
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#Setting Webcab size
-
-'''
-while(1):
-    # Take each frame (1)
-    _, frame = cap.read()  
-    imgContour = frame.copy()
-    # define range of blue color in HSV
-    lower_yellow = np.array([20,100,100])
-    upper_yellow = np.array([40,255,255])
-    lower_green = np.array([50,100,100])
-    upper_green = np.array([70,255,255])
-
-    # Convert BGR to HSV
-    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-
-    # Threshold the HSV image to get only blue colors (2)
-    mask = cv.inRange(hsv, lower_yellow, upper_yellow)
-    # Bitwise-AND mask and original image (3)
-    res = cv.bitwise_and(frame, frame, mask= mask)
-    
-    #frame[y1:y2, x1:x2]
-    #frame width = 640      frame height = 480
-    left_screen = frame[300:480,250:400]
-    #left_screen = frame
-    crop_hsv = cv.cvtColor(left_screen, cv.COLOR_BGR2HSV)
-    #mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
-    mask_interest = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
-
-    areaofCnt(mask_interest,imgContour)
-
-    # Display of your usual four images
-    cv.imshow('imgContour',imgContour)
-
-    k = cv.waitKey(5) & 0xFF
-    if k == 27:
-        break
-cv.destroyAllWindows()
-'''
 #Weapon Control(Localization)
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -128,38 +85,6 @@ class WeaponSwing:
         if(self.swing_side == 1):
             _, frame = cap.read()
 
-            #conventional
-            '''
-            angle45_hsv = cv.cvtColor(frame[0:160,0:213], cv.COLOR_BGR2HSV)
-            angle90_hsv = cv.cvtColor(frame[160:320,0:213], cv.COLOR_BGR2HSV)
-            angle135_hsv = cv.cvtColor(frame[320:480,0:213], cv.COLOR_BGR2HSV)
-            angle0_hsv = cv.cvtColor(frame[0:160,213:426], cv.COLOR_BGR2HSV)
-            angle180_hsv = cv.cvtColor(frame[320:480,213:426], cv.COLOR_BGR2HSV)
-            angle315_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
-            angle270_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
-            angle225_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)      
-
-            angle45_mask = cv.inRange(angle45_hsv,lower_color, upper_color)
-            angle90_mask = cv.inRange(angle90_hsv,lower_color, upper_color)
-            angle135_mask = cv.inRange(angle135_hsv,lower_color, upper_color)
-            angle0_mask = cv.inRange(angle0_hsv,lower_color, upper_color)
-            angle180_mask = cv.inRange(angle180_hsv,lower_color, upper_color)
-            angle315_mask = cv.inRange(angle315_hsv,lower_color, upper_color)
-            angle270_mask = cv.inRange(angle270_hsv,lower_color, upper_color)
-            angle225_mask = cv.inRange(angle225_hsv,lower_color, upper_color) 
-
-            angle = weaponAngle(angle45_mask,0,160,0,213,self.angle)
-            angle = weaponAngle(angle90_mask,160,320,0,213,angle)
-            angle = weaponAngle(angle135_mask,320,480,0,213,angle)
-            angle = weaponAngle(angle0_mask,0,160,213,426,angle)
-            angle = weaponAngle(angle180_mask,320,480,213,426,angle)
-            angle = weaponAngle(angle315_mask,0,160,426,640,angle)
-            angle = weaponAngle(angle270_mask,160,320,426,640,angle)
-            angle = weaponAngle(angle225_mask,320,480,426,640,angle)   
-            ''' 
-
-            #reverse
-            #'''
             angle45_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
             angle90_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
             angle135_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)
@@ -186,44 +111,11 @@ class WeaponSwing:
             angle = weaponAngle(angle315_mask,0,160,0,213,angle)
             angle = weaponAngle(angle270_mask,160,320,0,213,angle)
             angle = weaponAngle(angle225_mask,320,480,0,213,angle)
-            #'''
 
             self.angle = angle
         else:
             _, frame = cap.read() 
 
-            #conventional
-            '''  
-            angle45_hsv = cv.cvtColor(frame[0:160,0:213], cv.COLOR_BGR2HSV)
-            angle90_hsv = cv.cvtColor(frame[160:320,0:213], cv.COLOR_BGR2HSV)
-            angle135_hsv = cv.cvtColor(frame[320:480,0:213], cv.COLOR_BGR2HSV)
-            angle0_hsv = cv.cvtColor(frame[0:160,213:426], cv.COLOR_BGR2HSV)
-            angle180_hsv = cv.cvtColor(frame[320:480,213:426], cv.COLOR_BGR2HSV)
-            angle315_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
-            angle270_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
-            angle225_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)      
-
-            angle45_mask = cv.inRange(angle45_hsv,lower_color, upper_color)
-            angle90_mask = cv.inRange(angle90_hsv,lower_color, upper_color)
-            angle135_mask = cv.inRange(angle135_hsv,lower_color, upper_color)
-            angle0_mask = cv.inRange(angle0_hsv,lower_color, upper_color)
-            angle180_mask = cv.inRange(angle180_hsv,lower_color, upper_color)
-            angle315_mask = cv.inRange(angle315_hsv,lower_color, upper_color)
-            angle270_mask = cv.inRange(angle270_hsv,lower_color, upper_color)
-            angle225_mask = cv.inRange(angle225_hsv,lower_color, upper_color) 
-
-            angle = weaponAngle(angle45_mask,0,160,0,213,self.angle)
-            angle = weaponAngle(angle90_mask,160,320,0,213,angle)
-            angle = weaponAngle(angle135_mask,320,480,0,213,angle)
-            angle = weaponAngle(angle0_mask,0,160,213,426,angle)
-            angle = weaponAngle(angle180_mask,320,480,213,426,angle)
-            angle = weaponAngle(angle315_mask,0,160,426,640,angle)
-            angle = weaponAngle(angle270_mask,160,320,426,640,angle)
-            angle = weaponAngle(angle225_mask,320,480,426,640,angle)   
-            ''' 
-
-            #reverse
-            #'''
             angle45_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
             angle90_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
             angle135_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)
@@ -250,7 +142,6 @@ class WeaponSwing:
             angle = weaponAngle(angle315_mask,0,160,0,213,angle)
             angle = weaponAngle(angle270_mask,160,320,0,213,angle)
             angle = weaponAngle(angle225_mask,320,480,0,213,angle)
-            #'''
 
             self.angle = angle
 
