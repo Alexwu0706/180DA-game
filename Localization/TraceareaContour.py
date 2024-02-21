@@ -41,7 +41,7 @@ while(1):
     
     #frame[y1:y2, x1:x2]
     #frame width = 640      frame height = 480
-    left_screen = frame[300:480,250:400]
+    left_screen = frame[0:160,213:426]
     #left_screen = frame
     crop_hsv = cv.cvtColor(left_screen, cv.COLOR_BGR2HSV)
     #mask_interest1 = cv.inRange(crop_hsv,lower_yellow, upper_yellow)
@@ -52,7 +52,7 @@ while(1):
     areaofCnt(mask_interest2,imgContour,"blue",300,300)
 
     # Display of your usual four images
-    cv.imshow('imgContour',imgContour)
+    cv.imshow('imgContour',left_screen)
     #cv.imshow('mask',mask)
     #cv.imshow('res',res)
     #cv.imshow('crop',img)
