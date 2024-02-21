@@ -24,6 +24,7 @@ def weaponAngle(img_mask,y1,y2,x1,x2,pre_angle):
     contours,hierarchy = cv.findContours(img_mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     for cnt in contours:
         area = cv.contourArea(cnt) 
+        #Try increase the sensitivity by increase the diversity of angle (orientation) 180/6=30
         if(area > detectArea):
             if(x1 == 0 and x2 == 213 and y1 == 0 and y2 == 160):
                 angle = 315
