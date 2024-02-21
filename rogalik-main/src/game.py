@@ -18,7 +18,6 @@ pygame.mixer.init()
 
 world_size = (21 * 64, 14 * 64)
 
-
 # Define constants for the screen width and height
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600

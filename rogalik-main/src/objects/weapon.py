@@ -64,7 +64,6 @@ class WeaponSwing:
         self.offset_rotated = Vector2(0, -25)
         self.counter = 0
         self.swing_side = 1
-        #reserve for opencv while loop
 
     def reset(self):
         self.counter = 0
