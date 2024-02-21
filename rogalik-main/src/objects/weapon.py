@@ -129,7 +129,7 @@ class WeaponSwing:
             _, frame = cap.read()
 
             #conventional
-            '''  
+            '''
             angle45_hsv = cv.cvtColor(frame[0:160,0:213], cv.COLOR_BGR2HSV)
             angle90_hsv = cv.cvtColor(frame[160:320,0:213], cv.COLOR_BGR2HSV)
             angle135_hsv = cv.cvtColor(frame[320:480,0:213], cv.COLOR_BGR2HSV)
@@ -159,7 +159,7 @@ class WeaponSwing:
             ''' 
 
             #reverse
-            '''
+            #'''
             angle45_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
             angle90_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
             angle135_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)
@@ -186,7 +186,7 @@ class WeaponSwing:
             angle = weaponAngle(angle315_mask,0,160,0,213,angle)
             angle = weaponAngle(angle270_mask,160,320,0,213,angle)
             angle = weaponAngle(angle225_mask,320,480,0,213,angle)
-            '''
+            #'''
 
             self.angle = angle
         else:
@@ -223,7 +223,7 @@ class WeaponSwing:
             ''' 
 
             #reverse
-            '''
+            #'''
             angle45_hsv = cv.cvtColor(frame[0:160,426:640], cv.COLOR_BGR2HSV)
             angle90_hsv = cv.cvtColor(frame[160:320,426:640], cv.COLOR_BGR2HSV)
             angle135_hsv = cv.cvtColor(frame[320:480,426:640], cv.COLOR_BGR2HSV)
@@ -250,7 +250,7 @@ class WeaponSwing:
             angle = weaponAngle(angle315_mask,0,160,0,213,angle)
             angle = weaponAngle(angle270_mask,160,320,0,213,angle)
             angle = weaponAngle(angle225_mask,320,480,0,213,angle)
-            '''
+            #'''
 
             self.angle = angle
 
